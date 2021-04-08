@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+    app:
+        build:
+            args:
+                user: yasin
+                uid: 1000
+            context: ./
+            dockerfile: Dockerfile
+        image: laravel-online-learning
+        container_name: laravel-online-learning-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - laravel-online-learning
+        
+
+    db:
+        image: mysql:5.7
+        container_name: laravel-online-learning-db
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: online_learning
+            MYSQL_ROOT_PASSWORD: online_learning_root_pass
+            MYSQL_PASSWORD: online_learning_pass
+            MYSQL_USER: online_learning_user
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+        networks:
+            - laravel-online-learning
+
+
+    nginx:
+        image: nginx:1.17-alpine
+        container_name: laravel-online-learning-nginx
+        restart: unless-stopped
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d
+        networks:
+            - laravel-online-learning
+        
+
+networks:
+    laravel-online-learning:
+        driver: bridge
