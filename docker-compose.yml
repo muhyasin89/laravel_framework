@@ -40,7 +40,7 @@ services:
         container_name: laravel-online-learning-nginx
         restart: unless-stopped
         ports:
-            - 8000:80
+            - 9000:80
         volumes:
             - ./:/var/www
             - ./docker-compose/nginx:/etc/nginx/conf.d
