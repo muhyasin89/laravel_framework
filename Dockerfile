@@ -37,7 +37,7 @@ RUN mkdir -p /home/$user/.composer && \
 # Set working directory
 WORKDIR /var/www
 
-EXPOSE 8000
+EXPOSE 8005
 
 USER $user
 
